@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "StrideWars",
+    "slug": "stridewars",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stridewars.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.stridewars.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "02428700-28d9-4d1e-92d5-d9a95b8f1f88"
+      }
+    }
+  }
+}
