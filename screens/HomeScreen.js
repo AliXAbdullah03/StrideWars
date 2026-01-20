@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: '#FFFFFF',
     position: 'absolute',
-    left: '60%',
+    left: '59%',
     top: -28,
     transform: [{ translateX: -28 }],
   },

@@ -2,6 +2,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform, StatusBar, Image } from 'react-native';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LocationPermissionScreen({ navigation }) {
   const [status, setStatus] = useState('undetermined');
@@ -13,8 +14,16 @@ export default function LocationPermissionScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    requestPermission();
-  }, [requestPermission]);
+    const check = async () => {
+      const done = await AsyncStorage.getItem('permissionsCompleted');
+      if (done === 'true') {
+        navigation.replace('Home');
+        return;
+      }
+      requestPermission();
+    };
+    check();
+  }, [navigation, requestPermission]);
 
   return (
     <SafeAreaView style={styles.container}>

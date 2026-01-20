@@ -13,6 +13,7 @@ import {
   Modal
 } from 'react-native';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({ navigation }) {
   const [showForgot, setShowForgot] = useState(false);
@@ -74,7 +75,14 @@ export default function LoginScreen({ navigation }) {
             <TouchableOpacity
               style={styles.loginButton}
               activeOpacity={0.8}
-              onPress={() => navigation.navigate('LocationPermission')}
+              onPress={async () => {
+                const done = await AsyncStorage.getItem('permissionsCompleted');
+                if (done === 'true') {
+                  navigation.navigate('Home');
+                } else {
+                  navigation.navigate('LocationPermission');
+                }
+              }}
             >
                 <Text style={styles.loginButtonText}>Login</Text>
               </TouchableOpacity>

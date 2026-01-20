@@ -2,6 +2,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform, StatusBar, Image } from 'react-native';
 import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function NotificationPermissionScreen({ navigation }) {
   const [status, setStatus] = useState('undetermined');
@@ -16,10 +17,18 @@ export default function NotificationPermissionScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (!isExpoGo) {
-      requestPermission();
-    }
-  }, [requestPermission]);
+    const check = async () => {
+      const done = await AsyncStorage.getItem('permissionsCompleted');
+      if (done === 'true') {
+        navigation.replace('Home');
+        return;
+      }
+      if (!isExpoGo) {
+        requestPermission();
+      }
+    };
+    check();
+  }, [navigation, requestPermission, isExpoGo]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,10 +52,11 @@ export default function NotificationPermissionScreen({ navigation }) {
             <TouchableOpacity
               style={styles.allowButton}
               activeOpacity={0.8}
-              onPress={() => {
+              onPress={async () => {
                 if (!isExpoGo) {
-                  requestPermission();
+                  await requestPermission();
                 }
+                await AsyncStorage.setItem('permissionsCompleted', 'true');
                 navigation.navigate('Home');
               }}
             >

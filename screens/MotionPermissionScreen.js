@@ -1,7 +1,8 @@
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform, StatusBar, Image } from 'react-native';
 import { DeviceMotion } from 'expo-sensors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MotionPermissionScreen({ navigation }) {
   const requestMotionPermission = useCallback(async () => {
@@ -9,6 +10,16 @@ export default function MotionPermissionScreen({ navigation }) {
       await DeviceMotion.requestPermissionsAsync();
     }
   }, []);
+
+  useEffect(() => {
+    const check = async () => {
+      const done = await AsyncStorage.getItem('permissionsCompleted');
+      if (done === 'true') {
+        navigation.replace('Home');
+      }
+    };
+    check();
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
